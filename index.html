@@ -5,12 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DEEN</title>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js');
-  }
-</script>
   <style>
     :root {
       --bg:         #f7f3eb;
@@ -365,13 +359,18 @@
 
 <script>
   window.addEventListener('load', function() {
-    setTimeout(function() {
-      var splash = document.getElementById('splash');
-      splash.classList.add('hide');
+    var splash = document.getElementById('splash');
+    if (localStorage.getItem('deen_splash_shown')) {
+      splash.style.display = 'none';
+    } else {
       setTimeout(function() {
-        splash.style.display = 'none';
-      }, 650);
-    }, 2400);
+        splash.classList.add('hide');
+        setTimeout(function() {
+          splash.style.display = 'none';
+          localStorage.setItem('deen_splash_shown', '1');
+        }, 650);
+      }, 2400);
+    }
   });
 </script>
 </body>
