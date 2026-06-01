@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মাসায়েল ও উক্তি</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         #f7f3eb;
+      --card:       #ffffff;
+      --dark-green: #0b2e1a;
+      --mid-green:  #1a5a32;
+      --light-green:#eef7f2;
+      --gold:       #c49a2c;
+      --gold-l:     #e8c96a;
+      --gold-bg:    #fef8ed;
+      --border:     #d4e8da;
+      --text:       #1a2e20;
+      --muted:      #6b7c70;
+      --shadow:     rgba(11,46,26,0.10);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Serif Bengali', serif;
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(155deg, #0b2e1a 0%, #1e6e3e 100%);
+      padding: 48px 24px 40px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      width: 320px; height: 320px;
+      border: 2px solid rgba(196,154,44,.15);
+      border-radius: 50%;
+      top: -150px; left: -80px;
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border: 1.5px solid rgba(196,154,44,.1);
+      border-radius: 50%;
+      bottom: -100px; right: -50px;
+      pointer-events: none;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      top: 16px; left: 16px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: #fff;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.25); }
+    .app-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .app-subtitle {
+      display: inline-block;
+      font-size: 12px;
+      background: rgba(196,154,44,.2);
+      border: 1px solid rgba(196,154,44,.4);
+      border-radius: 20px;
+      padding: 5px 18px;
+      color: var(--gold-l);
+    }
+
+    /* ── Container ── */
+    .container { max-width: 480px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 14px; padding-left: 4px;
+    }
+    .section-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 32px 0 20px;
+    }
+    .section-badge {
+      background: var(--dark-green);
+      color: var(--gold-l);
+      font-size: 14px; font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--gold);
+      white-space: nowrap;
+    }
+    .section-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    /* ── Accordion ── */
+    .accord {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px var(--shadow);
+      animation: fadeUp 0.4s ease both;
+    }
+    .accord-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      user-select: none;
+      border-left: 4px solid var(--gold);
+      transition: background 0.2s;
+    }
+    .accord-head:hover { background: var(--light-green); }
+    .accord-head.open {
+      background: var(--dark-green);
+      color: #fff;
+      border-left-color: var(--gold-l);
+    }
+    .accord-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--gold-bg);
+      color: var(--dark-green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+      border: 1.5px solid var(--gold);
+      transition: all 0.2s;
+    }
+    .accord-head.open .accord-num {
+      background: var(--gold);
+      color: var(--dark-green);
+    }
+    .accord-q { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.5; }
+    .accord-head.open .accord-q { color: #fff; }
+    .chevron { font-size: 14px; color: var(--gold); transition: transform 0.3s; flex-shrink: 0; }
+    .accord-head.open .chevron { transform: rotate(180deg); color: var(--gold-l); }
+
+    .accord-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .accord-body.open { max-height: 600px; }
+    .accord-content {
+      padding: 16px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .accord-answer {
+      font-size: 14px;
+      line-height: 2;
+      color: #2a3a2e;
+      margin-bottom: 12px;
+    }
+    .ref-tag {
+      display: inline-block;
+      background: var(--gold-bg);
+      border: 1px solid #e8d4a0;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      color: #7a5c1e;
+      font-weight: 700;
+    }
+
+    /* ── Quote cards ── */
+    .quote-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px var(--shadow);
+      border-left: 4px solid var(--gold);
+      animation: fadeUp 0.4s ease both;
+    }
+    .quote-icon {
+      font-size: 24px; margin-bottom: 10px;
+    }
+    .quote-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark-green);
+      line-height: 1.9;
+      margin-bottom: 12px;
+    }
+    .quote-ref {
+      display: inline-block;
+      background: var(--light-green);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      color: var(--mid-green);
+      font-weight: 700;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-btn" href="index.html">← হোম</a>
+  <div class="app-title">মাসায়েল ও উক্তি</div>
+  <div class="app-subtitle">ইসলামিক মাসায়েল · হাদিস · উক্তি সংকলন</div>
+</header>
+
+<div class="container">
+
+  <!-- ══ মাসায়েল ══ -->
+  <div class="section-divider">
+    <div class="section-badge">📝 ইসলামিক মাসায়েল</div>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- ১ -->
+  <div class="accord" style="animation-delay:0.05s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">১</div>
+      <div class="accord-q">ফরজ নামাজের পর সুন্নত না পড়ে চলে গেলে কি গুনাহ হবে?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">সুন্নতে মুয়াক্কাদা বিনা কারণে ছেড়ে দেওয়া মাকরুহে তাহরিমি এবং গুনাহের কাজ। তবে কেউ যদি একান্ত প্রয়োজনে বা বৈধ কারণে পড়তে না পারেন, তাহলে গুনাহ হবে না। নিয়মিত ছেড়ে দেওয়া অভ্যাস করা নিন্দনীয়।</div>
+        <span class="ref-tag">📚 ফাতাওয়া শামি: ২/৫২ · আদ-দুররুল মুখতার</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ২ -->
+  <div class="accord" style="animation-delay:0.08s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">২</div>
+      <div class="accord-q">ওযু করার সময় কি বিসমিল্লাহ বলা ফরজ?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">হানাফি মাযহাব অনুযায়ী ওযুর শুরুতে বিসমিল্লাহ বলা সুন্নত, ফরজ নয়। তবে ইচ্ছাকৃতভাবে না বললে ওযু মাকরুহ হবে। শুধু ভুলে গেলে ওযু সহিহ হয়ে যাবে।</div>
+        <span class="ref-tag">📚 ফাতাওয়া হিন্দিয়া: ১/৮ · হেদায়া</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৩ -->
+  <div class="accord" style="animation-delay:0.11s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৩</div>
+      <div class="accord-q">রোজা রাখা অবস্থায় ইনজেকশন নিলে কি রোজা ভাঙবে?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">শুধু চিকিৎসার উদ্দেশ্যে শিরায় বা মাংসপেশিতে ইনজেকশন নিলে রোজা ভাঙবে না। কারণ ইনজেকশন স্বাভাবিক পানাহারের পথে (মুখ বা নাক দিয়ে) প্রবেশ করে না। তবে গ্লুকোজ বা পুষ্টিকর স্যালাইন শিরায় দিলে সতর্কতামূলকভাবে রোজা ভেঙে যায় বলে ধরা হয়।</div>
+        <span class="ref-tag">📚 ফাতাওয়া উসমানি: ২/১৮৫ · ইমদাদুল ফাতাওয়া</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৪ -->
+  <div class="accord" style="animation-delay:0.14s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৪</div>
+      <div class="accord-q">মোবাইলে কুরআন পড়লে কি ওযু থাকা জরুরি?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">মোবাইল বা ট্যাবলেটের স্ক্রিনে কুরআন দেখে পড়লে ওযু ছাড়াও পড়া জায়েজ, কারণ স্ক্রিন মুসহাফের হুকুম রাখে না। তবে ওযু সহকারে পড়া অধিক সওয়াবের এবং আদব বজায় রাখা উত্তম।</div>
+        <span class="ref-tag">📚 ফাতাওয়া দারুল উলুম দেওবন্দ · ইসলামকিউএ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৫ -->
+  <div class="accord" style="animation-delay:0.17s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৫</div>
+      <div class="accord-q">নামাজে মোবাইল বেজে উঠলে নামাজ ভাঙবে কি?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">শুধু মোবাইল বেজে উঠলে নামাজ ভাঙবে না। কিন্তু যদি নামাজি মোবাইল রিসিভ করে কথা বলেন বা স্ক্রিনের দিকে তাকিয়ে কোনো কাজ করেন, তাহলে নামাজ ভেঙে যাবে। নামাজের আগেই মোবাইল সাইলেন্ট করা উচিত।</div>
+        <span class="ref-tag">📚 ফাতাওয়া শামি: ১/৬২৫ · বাহারে শরিয়ত</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৬ -->
+  <div class="accord" style="animation-delay:0.20s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৬</div>
+      <div class="accord-q">ঘুম থেকে উঠে হাত না ধুয়ে খাবার খেলে কি গুনাহ হবে?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">ঘুম থেকে উঠে পাত্রে হাত দেওয়ার আগে তিনবার হাত ধোয়া সুন্নত। এটা না করলে গুনাহ হয় না, তবে সুন্নতের সওয়াব থেকে বঞ্চিত হয়। নবী ﷺ বলেছেন, ঘুমের মধ্যে হাত কোথায় থাকে তা কেউ জানে না।</div>
+        <span class="ref-tag">📚 সহিহ মুসলিম: ২৭৮ · সহিহ বুখারি: ১৬২</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৭ -->
+  <div class="accord" style="animation-delay:0.23s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৭</div>
+      <div class="accord-q">জুমার নামাজ কি ফরজে আইন?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">হ্যাঁ, জুমার নামাজ প্রাপ্তবয়স্ক, সুস্থ, মুকিম (প্রবাসী নয়) পুরুষ মুসলমানের জন্য ফরজে আইন। বিনা কারণে পরপর তিনটি জুমা ছেড়ে দিলে আল্লাহ তাআলা তার অন্তরে মোহর মেরে দেন বলে হাদিসে এসেছে।</div>
+        <span class="ref-tag">📚 সুনান আবু দাউদ: ১০৫২ · সুনান তিরমিযি: ৫০০</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৮ -->
+  <div class="accord" style="animation-delay:0.26s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৮</div>
+      <div class="accord-q">সফরে থাকলে কি রোজা না রাখার অনুমতি আছে?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">হ্যাঁ, শরিয়তসম্মত সফরে (৪৮ মাইল বা প্রায় ৭৭ কিলোমিটারের বেশি দূরত্ব) রোজা না রাখার অনুমতি আছে। তবে পরে সেই রোজাগুলো কাজা করতে হবে। রোজা রাখা বা না রাখা উভয়ই জায়েজ — যেটা সহজ সেটা করা যাবে।</div>
+        <span class="ref-tag">📚 সূরা বাকারা: ১৮৪-১৮৫ · সহিহ বুখারি: ১৯৪৬</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৯ -->
+  <div class="accord" style="animation-delay:0.29s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">৯</div>
+      <div class="accord-q">গান শোনা কি ইসলামে হারাম?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">জমহুর উলামার মতে, অশ্লীল ও পাপের দিকে আহ্বানকারী গান হারাম। বাদ্যযন্ত্র সহ গান সম্পর্কে ইমাম আবু হানিফা (রহ.) সহ অধিকাংশ ইমাম নিষেধ করেছেন। তবে বাদ্যযন্ত্রহীন নাশিদ বা ইসলামিক গজল জায়েজ।</div>
+        <span class="ref-tag">📚 সহিহ বুখারি: ৫৫৯০ · ফাতাওয়া ইবনে তাইমিয়া: ১১/৫৭৬</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ১০ -->
+  <div class="accord" style="animation-delay:0.32s">
+    <div class="accord-head" onclick="tog(this)">
+      <div class="accord-num">১০</div>
+      <div class="accord-q">তায়াম্মুম কখন করা যাবে?</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="accord-body">
+      <div class="accord-content">
+        <div class="accord-answer">তিনটি পরিস্থিতিতে তায়াম্মুম করা যাবে: (১) পানি না পাওয়া গেলে, (২) পানি ব্যবহার করলে অসুস্থতা বাড়ার বা ক্ষতির আশঙ্কা থাকলে, (৩) পানি পাওয়া গেলেও এত কম যে পান করার জন্য সংরক্ষণ জরুরি। পবিত্র মাটি বা ধুলোযুক্ত কোনো বস্তু দিয়ে তায়াম্মুম করা যাবে।</div>
+        <span class="ref-tag">📚 সূরা নিসা: ৪৩ · সহিহ বুখারি: ৩৩৫ · ফাতাওয়া শামি: ১/২৩০</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ উক্তি ══ -->
+  <div class="section-divider">
+    <div class="section-badge">💬 ইসলামিক উক্তি</div>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- উক্তি ১ -->
+  <div class="quote-card" style="animation-delay:0.05s">
+    <div class="quote-icon">🌙</div>
+    <div class="quote-text">"তোমাদের মধ্যে সর্বোত্তম সে, যে কুরআন শেখে এবং অন্যকে শেখায়।"</div>
+    <span class="quote-ref">📖 সহিহ বুখারি: ৫০২৭ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ২ -->
+  <div class="quote-card" style="animation-delay:0.08s">
+    <div class="quote-icon">🤲</div>
+    <div class="quote-text">"দুআ হলো ইবাদতের মগজ।"</div>
+    <span class="quote-ref">📖 সুনান তিরমিযি: ৩৩৭১ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ৩ -->
+  <div class="quote-card" style="animation-delay:0.11s">
+    <div class="quote-icon">⭐</div>
+    <div class="quote-text">"যে ব্যক্তি আল্লাহর উপর ভরসা রাখে, আল্লাহই তার জন্য যথেষ্ট।"</div>
+    <span class="quote-ref">📖 সূরা তালাক: ৩ — আল-কুরআন</span>
+  </div>
+
+  <!-- উক্তি ৪ -->
+  <div class="quote-card" style="animation-delay:0.14s">
+    <div class="quote-icon">🌿</div>
+    <div class="quote-text">"মুমিনের বিষয়টি আশ্চর্যজনক — তার প্রতিটি বিষয়ই তার জন্য কল্যাণকর। সুখে শোকর করলে কল্যাণ, বিপদে সবর করলেও কল্যাণ।"</div>
+    <span class="quote-ref">📖 সহিহ মুসলিম: ২৯৯৯ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ৫ -->
+  <div class="quote-card" style="animation-delay:0.17s">
+    <div class="quote-icon">💡</div>
+    <div class="quote-text">"জ্ঞান অর্জন করা প্রত্যেক মুসলিমের উপর ফরজ।"</div>
+    <span class="quote-ref">📖 সুনান ইবনে মাজাহ: ২২৪ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ৬ -->
+  <div class="quote-card" style="animation-delay:0.20s">
+    <div class="quote-icon">🕌</div>
+    <div class="quote-text">"নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে। নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে।"</div>
+    <span class="quote-ref">📖 সূরা আল-ইনশিরাহ: ৫-৬ — আল-কুরআন</span>
+  </div>
+
+  <!-- উক্তি ৭ -->
+  <div class="quote-card" style="animation-delay:0.23s">
+    <div class="quote-icon">❤️</div>
+    <div class="quote-text">"তোমাদের কেউ প্রকৃত মুমিন হতে পারবে না যতক্ষণ না সে তার ভাইয়ের জন্য তা-ই পছন্দ করবে, যা নিজের জন্য পছন্দ করে।"</div>
+    <span class="quote-ref">📖 সহিহ বুখারি: ১৩ · সহিহ মুসলিম: ৪৫ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ৮ -->
+  <div class="quote-card" style="animation-delay:0.26s">
+    <div class="quote-icon">🌅</div>
+    <div class="quote-text">"পার্থিব জীবন হলো মুমিনের জন্য কারাগার এবং কাফিরের জন্য জান্নাত।"</div>
+    <span class="quote-ref">📖 সহিহ মুসলিম: ২৯৫৬ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ৯ -->
+  <div class="quote-card" style="animation-delay:0.29s">
+    <div class="quote-icon">🌙</div>
+    <div class="quote-text">"আল্লাহ যাকে কল্যাণ দিতে চান, তাকে দ্বীনের জ্ঞান দান করেন।"</div>
+    <span class="quote-ref">📖 সহিহ বুখারি: ৭১ · সহিহ মুসলিম: ১০৩৭ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+  <!-- উক্তি ১০ -->
+  <div class="quote-card" style="animation-delay:0.32s">
+    <div class="quote-icon">🤍</div>
+    <div class="quote-text">"যে ব্যক্তি আল্লাহকে ভালোবাসে এবং আল্লাহর জন্য ভালোবাসে ও আল্লাহর জন্য ঘৃণা করে — সে পূর্ণ ঈমানের অধিকারী।"</div>
+    <span class="quote-ref">📖 সুনান আবু দাউদ: ৪৬৮১ — রাসুলুল্লাহ ﷺ</span>
+  </div>
+
+</div>
+
+<footer>সমস্ত তথ্য কুরআন ও সহিহ হাদিস থেকে সংকলিত</footer>
+
+<script>
+  function tog(head) {
+    const body = head.nextElementSibling;
+    const isOpen = head.classList.contains('open');
+    head.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>

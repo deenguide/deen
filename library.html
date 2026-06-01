@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ইসলামিক বই ভাণ্ডার</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         #f7f3eb;
+      --card:       #ffffff;
+      --dark-green: #0b2e1a;
+      --mid-green:  #1a5a32;
+      --light-green:#eef7f2;
+      --gold:       #c49a2c;
+      --gold-l:     #e8c96a;
+      --gold-bg:    #fef8ed;
+      --border:     #d4e8da;
+      --text:       #1a2e20;
+      --muted:      #6b7c70;
+      --shadow:     rgba(11,46,26,0.10);
+      --red:        #c0392b;
+      --red-bg:     #fdf0ee;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Serif Bengali', serif;
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(155deg, #0b2e1a 0%, #1e6e3e 100%);
+      padding: 48px 24px 40px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      width: 320px; height: 320px;
+      border: 2px solid rgba(196,154,44,.15);
+      border-radius: 50%;
+      top: -150px; left: -80px;
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border: 1.5px solid rgba(196,154,44,.1);
+      border-radius: 50%;
+      bottom: -100px; right: -50px;
+      pointer-events: none;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      top: 16px; left: 16px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: #fff;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.25); }
+    .arabic-header {
+      font-family: 'Amiri', serif;
+      font-size: 32px;
+      color: var(--gold-l);
+      margin-bottom: 8px;
+    }
+    .app-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .app-subtitle {
+      display: inline-block;
+      font-size: 12px;
+      background: rgba(196,154,44,.2);
+      border: 1px solid rgba(196,154,44,.4);
+      border-radius: 20px;
+      padding: 5px 18px;
+      color: var(--gold-l);
+    }
+
+    /* ── Container ── */
+    .container { max-width: 480px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 14px; padding-left: 4px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* ── Book Grid ── */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .book-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 14px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      box-shadow: 0 2px 8px var(--shadow);
+      animation: fadeUp 0.4s ease both;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .book-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px var(--shadow);
+      border-color: var(--gold);
+    }
+    .book-emoji { font-size: 38px; line-height: 1; }
+    .book-name {
+      font-size: 14px; font-weight: 700;
+      color: var(--text); line-height: 1.5;
+    }
+    .book-author {
+      font-size: 11px; color: var(--muted); line-height: 1.4;
+    }
+    .read-btn {
+      display: inline-block;
+      background: var(--dark-green);
+      color: var(--gold-l);
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 12px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+    .read-btn:hover { background: var(--mid-green); }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      background: var(--card);
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      margin-bottom: 24px;
+    }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 10px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Admin trigger ── */
+    .admin-link { text-align: center; margin-top: 20px; }
+    .admin-btn {
+      display: inline-block;
+      padding: 8px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Modal overlay ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.92) translateY(10px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+    .modal-title {
+      font-size: 18px; font-weight: 700;
+      color: var(--dark-green); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .modal-close {
+      margin-left: auto; background: none; border: none;
+      font-size: 20px; cursor: pointer; color: var(--muted);
+      line-height: 1; padding: 0;
+    }
+    .modal-close:hover { color: var(--red); }
+
+    /* ── Form fields ── */
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: var(--muted); margin-bottom: 5px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .field input:focus, .field select:focus { border-color: var(--gold); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--dark-green);
+      color: var(--gold-l);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+    .btn-primary:hover { background: var(--mid-green); }
+
+    .error-msg {
+      background: var(--red-bg);
+      border: 1px solid #e8b4ae;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── Admin panel ── */
+    #admin-panel { display: none; }
+    #admin-panel.active { display: block; }
+
+    .admin-header {
+      background: var(--gold-bg);
+      border: 1px solid #e8d4a0;
+      border-left: 4px solid var(--gold);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-header-title { font-size: 15px; font-weight: 700; color: #7a5c1e; }
+    .logout-btn {
+      background: none; border: 1px solid #e8d4a0;
+      border-radius: 20px; padding: 4px 14px;
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 12px; color: #7a5c1e; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover { background: #e8d4a0; }
+
+    .add-book-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .add-book-title {
+      font-size: 15px; font-weight: 700;
+      color: var(--dark-green); margin-bottom: 16px;
+    }
+
+    /* ── Admin book list ── */
+    .admin-book-item {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 4px var(--shadow);
+    }
+    .admin-book-emoji { font-size: 28px; flex-shrink: 0; }
+    .admin-book-info { flex: 1; min-width: 0; }
+    .admin-book-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .admin-book-author { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .admin-book-link { font-size: 11px; color: var(--gold); margin-top: 3px; word-break: break-all; }
+    .del-btn {
+      background: var(--red-bg); border: 1px solid #e8b4ae;
+      border-radius: 8px; padding: 6px 12px;
+      font-size: 12px; color: var(--red); cursor: pointer;
+      font-family: 'Noto Serif Bengali', serif;
+      flex-shrink: 0; transition: background 0.2s;
+    }
+    .del-btn:hover { background: #f5c6c2; }
+
+    /* ── Emoji picker ── */
+    .emoji-grid {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 8px;
+    }
+    .emoji-opt {
+      font-size: 24px; cursor: pointer;
+      padding: 4px 6px; border-radius: 8px;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .emoji-opt:hover { background: var(--light-green); }
+    .emoji-opt.selected { border-color: var(--gold); background: var(--gold-bg); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-btn" href="index.html">← হোম</a>
+  <div class="arabic-header">اقْرَأْ بِاسْمِ رَبِّكَ</div>
+  <div class="app-title">ইসলামিক বই ভাণ্ডার</div>
+  <div class="app-subtitle">পড়ো তোমার প্রভুর নামে · সূরা আলাক</div>
+</header>
+
+<div class="container">
+
+  <!-- ══ USER VIEW ══ -->
+  <div id="user-panel">
+    <div class="section-title">
+      <span>📚 সকল বই</span>
+      <span id="book-count" style="font-weight:400; font-size:12px;"></span>
+    </div>
+
+    <div id="book-grid" class="book-grid"></div>
+    <div id="empty-state" class="empty-state" style="display:none;">
+      <div class="empty-icon">📭</div>
+      <div>এখনো কোনো বই যোগ করা হয়নি</div>
+      <div style="font-size:12px; margin-top:6px;">Admin Panel থেকে বই যোগ করুন</div>
+    </div>
+
+    <div class="admin-link">
+      <button class="admin-btn" onclick="openLoginModal()">⚙️ Admin Panel</button>
+    </div>
+  </div>
+
+  <!-- ══ ADMIN VIEW ══ -->
+  <div id="admin-panel">
+    <div class="admin-header">
+      <div class="admin-header-title">⚙️ Admin Panel — সক্রিয়</div>
+      <button class="logout-btn" onclick="adminLogout()">লগআউট</button>
+    </div>
+
+    <!-- Add book form -->
+    <div class="add-book-card">
+      <div class="add-book-title">➕ নতুন বই যোগ করুন</div>
+
+      <div class="field">
+        <label>বইয়ের আইকন বেছে নিন</label>
+        <div class="emoji-grid" id="emoji-grid"></div>
+        <input type="hidden" id="selected-emoji" value="📗">
+      </div>
+
+      <div class="field">
+        <label>বইয়ের নাম *</label>
+        <input type="text" id="input-name" placeholder="যেমন: রিয়াদুস সালেহীন">
+      </div>
+
+      <div class="field">
+        <label>লেখক / সংকলক *</label>
+        <input type="text" id="input-author" placeholder="যেমন: ইমাম নববী (রহ.)">
+      </div>
+
+      <div class="field">
+        <label>Google Drive PDF লিংক *</label>
+        <input type="url" id="input-link" placeholder="https://drive.google.com/...">
+      </div>
+
+      <div class="error-msg" id="add-error"></div>
+      <button class="btn-primary" onclick="addBook()">বই যোগ করুন</button>
+    </div>
+
+    <!-- Admin book list -->
+    <div class="section-title">
+      <span>📋 যোগ করা বইসমূহ</span>
+      <span id="admin-book-count" style="font-weight:400; font-size:12px;"></span>
+    </div>
+    <div id="admin-book-list"></div>
+    <div id="admin-empty" class="empty-state" style="display:none;">
+      <div class="empty-icon">📭</div>
+      <div>এখনো কোনো বই নেই</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Login Modal ── -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <div class="modal-title">
+      🔐 Admin Login
+      <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>PIN নম্বর</label>
+      <input type="password" id="pin-input" placeholder="PIN দিন" maxlength="10"
+             onkeydown="if(event.key==='Enter') checkPin()">
+    </div>
+    <div class="error-msg" id="pin-error">❌ PIN ভুল হয়েছে। আবার চেষ্টা করুন।</div>
+    <button class="btn-primary" onclick="checkPin()">প্রবেশ করুন</button>
+  </div>
+</div>
+
+<footer>সমস্ত তথ্য কুরআন ও সহিহ হাদিস থেকে সংকলিত</footer>
+
+<script>
+  const ADMIN_PIN = '123321';
+  const STORAGE_KEY = 'islamic_library_books';
+  const EMOJIS = ['📗','📘','📙','📕','📚','📖','🕌','☪️','🌙','⭐','🤲','📿','🌿','🕋','📜','✨'];
+
+  let isAdmin = false;
+
+  // ── Init ──
+  function init() {
+    renderEmojiGrid();
+    renderUserBooks();
+    renderAdminBooks();
+  }
+
+  // ── Emoji grid ──
+  function renderEmojiGrid() {
+    const grid = document.getElementById('emoji-grid');
+    grid.innerHTML = '';
+    EMOJIS.forEach(e => {
+      const span = document.createElement('span');
+      span.className = 'emoji-opt' + (e === '📗' ? ' selected' : '');
+      span.textContent = e;
+      span.onclick = () => selectEmoji(e, span);
+      grid.appendChild(span);
+    });
+  }
+
+  function selectEmoji(e, el) {
+    document.querySelectorAll('.emoji-opt').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('selected-emoji').value = e;
+  }
+
+  // ── LocalStorage ──
+  function getBooks() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveBooks(books) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+  }
+
+  // ── Render user books ──
+  function renderUserBooks() {
+    const books = getBooks();
+    const grid = document.getElementById('book-grid');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('book-count');
+
+    if (books.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      count.textContent = '';
+    } else {
+      grid.style.display = 'grid';
+      empty.style.display = 'none';
+      count.textContent = books.length + 'টি বই';
+      grid.innerHTML = books.map((b, i) => `
+        <a class="book-card" href="${escHref(b.link)}" target="_blank" rel="noopener"
+           style="animation-delay:${i * 0.05}s">
+          <div class="book-emoji">${esc(b.emoji)}</div>
+          <div class="book-name">${esc(b.name)}</div>
+          <div class="book-author">${esc(b.author)}</div>
+          <span class="read-btn">পড়ুন ›</span>
+        </a>
+      `).join('');
+    }
+  }
+
+  // ── Render admin books ──
+  function renderAdminBooks() {
+    const books = getBooks();
+    const list = document.getElementById('admin-book-list');
+    const empty = document.getElementById('admin-empty');
+    const count = document.getElementById('admin-book-count');
+
+    count.textContent = books.length + 'টি বই';
+    if (books.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      list.innerHTML = books.map((b, i) => `
+        <div class="admin-book-item">
+          <div class="admin-book-emoji">${esc(b.emoji)}</div>
+          <div class="admin-book-info">
+            <div class="admin-book-name">${esc(b.name)}</div>
+            <div class="admin-book-author">${esc(b.author)}</div>
+            <div class="admin-book-link">${esc(b.link)}</div>
+          </div>
+          <button class="del-btn" onclick="deleteBook(${i})">মুছুন</button>
+        </div>
+      `).join('');
+    }
+  }
+
+  // ── Add book ──
+  function addBook() {
+    const emoji  = document.getElementById('selected-emoji').value;
+    const name   = document.getElementById('input-name').value.trim();
+    const author = document.getElementById('input-author').value.trim();
+    const link   = document.getElementById('input-link').value.trim();
+    const errEl  = document.getElementById('add-error');
+
+    if (!name || !author || !link) {
+      errEl.textContent = '❌ সব ঘর পূরণ করুন।';
+      errEl.classList.add('show'); return;
+    }
+    if (!link.startsWith('http')) {
+      errEl.textContent = '❌ সঠিক লিংক দিন (https://...)';
+      errEl.classList.add('show'); return;
+    }
+    errEl.classList.remove('show');
+
+    const books = getBooks();
+    books.push({ emoji, name, author, link });
+    saveBooks(books);
+
+    // reset form
+    document.getElementById('input-name').value = '';
+    document.getElementById('input-author').value = '';
+    document.getElementById('input-link').value = '';
+    document.getElementById('selected-emoji').value = '📗';
+    document.querySelectorAll('.emoji-opt').forEach((x,i) => {
+      x.classList.toggle('selected', i === 0);
+    });
+
+    renderUserBooks();
+    renderAdminBooks();
+  }
+
+  // ── Delete book ──
+  function deleteBook(i) {
+    if (!confirm('এই বইটি মুছে ফেলবেন?')) return;
+    const books = getBooks();
+    books.splice(i, 1);
+    saveBooks(books);
+    renderUserBooks();
+    renderAdminBooks();
+  }
+
+  // ── Login modal ──
+  function openLoginModal() {
+    document.getElementById('login-modal').classList.add('active');
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-error').classList.remove('show');
+    setTimeout(() => document.getElementById('pin-input').focus(), 100);
+  }
+  function closeLoginModal() {
+    document.getElementById('login-modal').classList.remove('active');
+  }
+  function checkPin() {
+    const val = document.getElementById('pin-input').value;
+    if (val === ADMIN_PIN) {
+      closeLoginModal();
+      showAdmin();
+    } else {
+      document.getElementById('pin-error').classList.add('show');
+      document.getElementById('pin-input').value = '';
+      document.getElementById('pin-input').focus();
+    }
+  }
+
+  // ── Show/hide panels ──
+  function showAdmin() {
+    isAdmin = true;
+    document.getElementById('user-panel').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('active');
+    renderAdminBooks();
+  }
+  function adminLogout() {
+    isAdmin = false;
+    document.getElementById('admin-panel').classList.remove('active');
+    document.getElementById('user-panel').style.display = 'block';
+    renderUserBooks();
+  }
+
+  // ── Escape helpers ──
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escHref(s) {
+    try { return new URL(s).href; } catch { return '#'; }
+  }
+
+  init();
+</script>
+</body>
+</html>
