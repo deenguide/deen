@@ -1,10 +1,11 @@
-const CACHE_NAME = 'deen-app-v1';
+const CACHE_NAME = 'deen-app-v2';
 
 const FILES_TO_CACHE = [
   './index.html',
   './sunnah.html',
   './library.html',
   './masayel.html',
+  './islamic-qa-accordion.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
