@@ -1,4 +1,4 @@
-const CACHE_NAME = 'deen-app-v2';
+const CACHE_NAME = 'deen-app-v2.2';
 
 const FILES_TO_CACHE = [
   './index.html',
